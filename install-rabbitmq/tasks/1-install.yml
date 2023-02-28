@@ -1,0 +1,89 @@
+---
+- name: Validate
+  ansible.builtin.fail:
+    msg: "RabbitMq cluster must be 3 nodes for setup"
+  when: ansible_play_hosts | length != 3
+
+- name: Install dependancy packages
+  ansible.builtin.apt:
+    name:
+      - apt-transport-https
+      - sshpass
+    state: present
+    update_cache: true
+
+- name: Install Team RabbitMQ's main signing key
+  ansible.builtin.apt_key:
+    url: "https://keys.openpgp.org/vks/v1/by-fingerprint/0A9AF2115F4687BD29803A206B73A36E6026DFCA"
+    keyring: /usr/share/keyrings/com.rabbitmq.team.gpg
+    state: present
+    validate_certs: no
+
+- name: Launchpad PPA that provides modern Erlang releases
+  ansible.builtin.apt_key:
+    url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xf77f1eda57ebb1cc"
+    keyring: /usr/share/keyrings/net.launchpad.ppa.rabbitmq.erlang.gpg
+    state: present
+    validate_certs: no
+
+- name: Install PackageCloud RabbitMQ repository key
+  ansible.builtin.apt_key:
+    url: "https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey"
+    keyring: /usr/share/keyrings/io.packagecloud.rabbitmq.gpg
+    state: present
+    validate_certs: no
+
+- name: Add the Erlang/OTP releases
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/net.launchpad.ppa.rabbitmq.erlang.gpg] http://ppa.launchpad.net/rabbitmq/rabbitmq-erlang/ubuntu focal main"
+    state: present
+    validate_certs: no
+
+- name: Add the Erlang/OTP releases src
+  apt_repository:
+    repo: "deb-src [signed-by=/usr/share/keyrings/net.launchpad.ppa.rabbitmq.erlang.gpg] http://ppa.launchpad.net/rabbitmq/rabbitmq-erlang/ubuntu focal main"
+    state: present
+    validate_certs: no
+
+- name: Add the RabbitMQ repository
+  apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/io.packagecloud.rabbitmq.gpg] https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu/ focal main"
+    state: present
+    validate_certs: no
+
+- name: Add the RabbitMQ repository src
+  apt_repository:
+    repo: "deb-src [signed-by=/usr/share/keyrings/io.packagecloud.rabbitmq.gpg] https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu/ focal main"
+    state: present
+    validate_certs: no
+
+- name: Install Erlang packages
+  ansible.builtin.apt:
+    name:
+      - erlang-base
+      - erlang-asn1
+      - erlang-crypto
+      - erlang-eldap 
+      - erlang-ftp 
+      - erlang-inets
+      - erlang-mnesia 
+      - erlang-os-mon 
+      - erlang-parsetools 
+      - erlang-public-key
+      - erlang-runtime-tools 
+      - erlang-snmp 
+      - erlang-ssl
+      - erlang-syntax-tools 
+      - erlang-tftp 
+      - erlang-tools 
+      - erlang-xmerl
+    state: present
+    update_cache: true
+
+- name: Install rabbitmq-server and its dependencies
+  shell: "apt-get install rabbitmq-server={{ rabbitmq_version }} -y --fix-missing"
+
+- name: Enables the rabbitmq_management plugin
+  community.rabbitmq.rabbitmq_plugin:
+    names: "{{ rabbitmq_plugins | join(',') }}"
+    state: enabled
