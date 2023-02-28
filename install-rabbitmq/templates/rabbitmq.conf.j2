@@ -1,0 +1,16 @@
+## Resource Limits & Flow Control
+## Related doc guide: https://rabbitmq.com/memory.html.
+vm_memory_high_watermark.relative = {{ rabbitmq_vm_memory_high_watermark_relative }}
+
+## Logging settings.
+## See https://rabbitmq.com/logging.html for details.
+log.file.level = {{ rabbitmq_log_level }}
+log.file.formatter = {{ rabbitmq_log_format }}
+log.file.rotation.date = $D0
+# log.file.rotation.size = 0
+log.file.rotation.count = {{ rabbitmq_log_rotate_file }}
+log.console = {{ rabbitmq_log_console | lower }}
+
+## Statistics interval
+## See https://www.rabbitmq.com/management.html#statistics-interval for details.
+collect_statistics_interval = {{ rabbitmq_collect_statistics_interval }}

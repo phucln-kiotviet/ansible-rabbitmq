@@ -1,0 +1,28 @@
+---
+- name: Create file rabbitmq.conf
+  ansible.builtin.template:
+    src: rabbitmq.conf.j2
+    dest: "{{ rabbitmq_config_dir }}/rabbitmq.conf"
+
+- name: Create file advanced.config
+  ansible.builtin.template:
+    src: advanced.config.j2
+    dest: "{{ rabbitmq_config_dir }}/advanced.config"
+
+- name: Create file enabled_plugins
+  ansible.builtin.template:
+    src: enabled_plugins.j2
+    dest: "{{ rabbitmq_config_dir }}/enabled_plugins"
+
+- name: Change LimitNOFILE in systemd
+  lineinfile: 
+    path: /lib/systemd/system/rabbitmq-server.service
+    regexp: '^LimitNOFILE=\d*$' 
+    line: 'LimitNOFILE=65536'
+    backrefs: yes
+
+- name: Restart rabbitmq-server
+  ansible.builtin.systemd:
+    name: rabbitmq-server
+    state: restarted
+    daemon_reload: yes
