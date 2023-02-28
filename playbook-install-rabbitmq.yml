@@ -1,0 +1,20 @@
+---
+- name: Add IP address of all hosts to all hosts
+  hosts: rabbitmq
+  become: yes
+  any_errors_fatal: true
+  tasks:
+    - name: Update hosts file
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '.*{{ hostvars[item].ansible_hostname }}$'
+        line: "{{ hostvars[item]['ansible_default_ipv4']['address'] }} {{ hostvars[item].ansible_hostname }}"
+        state: present
+      with_items: "{{ ansible_play_hosts }}"
+
+- name: Install rabbitmq cluster for main app
+  hosts: rabbitmq
+  become: yes
+  serial: 1
+  roles:
+    - install-rabbitmq

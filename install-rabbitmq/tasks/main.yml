@@ -1,2 +1,6 @@
 ---
-# tasks file for install-rabbitmq
+- include_tasks: 1-install.yaml
+- include_tasks: 2-config.yaml
+- include_tasks: 3-add-user.yaml
+- include_tasks: 4-setup-cluster.yaml
+- include_tasks: 5-add-vhost.yaml

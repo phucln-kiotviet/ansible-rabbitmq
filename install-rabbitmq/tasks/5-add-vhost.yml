@@ -1,0 +1,7 @@
+- name: Create additional virtual host
+  community.rabbitmq.rabbitmq_vhost:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ rabbitmq_vhost }}"
+  when: rabbitmq_vhost is defined
+  run_once: true
