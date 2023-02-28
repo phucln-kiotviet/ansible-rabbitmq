@@ -1,0 +1,32 @@
+---  
+- name: Get cookie on master node (default is first node of ansible_play_hosts)
+  shell: "cat /var/lib/rabbitmq/.erlang.cookie"
+  register: reg_rabbitmq_cookie
+  changed_when: no
+
+- name: Set cookie from master node to current node
+  ansible.builtin.copy:
+    content: "{{ hostvars[ansible_play_hosts | first].reg_rabbitmq_cookie.stdout }}"
+    dest: "{{ rabbitmq_erlang_cookie_path }}/.erlang.cookie"
+    owner: rabbitmq
+    group: rabbitmq
+    mode: 0600
+  notify: Restart rabbitmq-server
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Join to rabbitmq master node (default is first node of ansible_play_hosts)
+  block:
+    - name: Stop rabbitmq app
+      shell: "rabbitmqctl stop_app"
+
+    - name: Reset rabbitmq app
+      shell: "rabbitmqctl reset"
+
+    - name: Join current node to the cluster
+      shell: "rabbitmqctl join_cluster rabbit@{{ hostvars[ansible_play_hosts | first].ansible_hostname }}"
+
+    - name: Start rabbitmq app
+      shell: "rabbitmqctl start_app"
+  when: "inventory_hostname != ansible_play_hosts | first"
