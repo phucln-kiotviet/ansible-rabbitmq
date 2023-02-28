@@ -1,6 +1,6 @@
 ---
-- include_tasks: 1-install.yaml
-- include_tasks: 2-config.yaml
-- include_tasks: 3-add-user.yaml
-- include_tasks: 4-setup-cluster.yaml
-- include_tasks: 5-add-vhost.yaml
+- include_tasks: 1-install.yml
+- include_tasks: 2-config.yml
+- include_tasks: 3-add-user.yml
+- include_tasks: 4-setup-cluster.yml
+- include_tasks: 5-add-vhost.yml

@@ -9,6 +9,8 @@
     name:
       - apt-transport-https
       - sshpass
+      - gpg
+      - systemctl
     state: present
     update_cache: true
 
