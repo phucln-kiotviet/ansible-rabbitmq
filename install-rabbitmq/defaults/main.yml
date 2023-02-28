@@ -1,2 +1,21 @@
 ---
 # defaults file for install-rabbitmq
+rabbitmq_version: 3.10.7-1
+rabbitmq_admin_user: admin
+rabbitmq_admin_password: admin
+
+rabbitmq_install_mode: cluster #standalone
+rabbitmq_config_dir: /etc/rabbitmq
+rabbitmq_erlang_cookie_path: /var/lib/rabbitmq
+
+rabbitmq_log_level: warning
+rabbitmq_log_format: json
+rabbitmq_log_rotate_file: 5
+rabbitmq_log_console: "false"
+
+rabbitmq_collect_statistics_interval: 10000
+rabbitmq_vm_memory_high_watermark_relative: 0.8
+
+rabbitmq_plugins: 
+  - "rabbitmq_management"
+  - "rabbitmq_prometheus"
