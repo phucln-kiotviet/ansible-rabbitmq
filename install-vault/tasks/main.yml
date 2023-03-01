@@ -1,2 +1,15 @@
----
-# tasks file for install-vault
+
+- name: Install vault from apt
+  apt: name=vault state=latest update_cache=yes
+  notify:
+    - Start vault
+    - Enable vault
+
+- name: Apply vault config
+  template:
+    src: "vault.hcl.j2"
+    dest: /etc/vault.d/vault.hcl
+    owner: "root"
+    group: "root"
+  notify:
+    - Start vault

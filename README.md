@@ -18,3 +18,10 @@ ansible-playbook -i inventory.yml playbook.yml --user ubuntu --extra-vars "ansib
 ```sh
 ansible-playbook -i inventory.yml playbook-install-rabbitmq.yml --user ubuntu --extra-vars "ansible_sudo_pass=12345678"
 ```
+
+
+## install vault
+
+```sh
+ansible-playbook -vv --user ubuntu --extra-vars "ansible_sudo_pass=12345678" -i inventy-vault.yml playbook-install-vault.yml 
+```

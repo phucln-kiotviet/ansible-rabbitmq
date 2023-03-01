@@ -1,0 +1,8 @@
+# ansible-playbook -vv --extra-vars "ansible_sudo_pass=${ANSIBLE_SUDO_PASSW}" --extra-vars "ansible_user=${ANSIBLE_USER}" -i inventories/dc2.yaml playbook-mon-config-haproxy.yaml 
+---
+- name: config-mon-vault
+  hosts: "kv-monitoring-nomad"
+  become: yes
+  roles:
+    - install-vault
+    

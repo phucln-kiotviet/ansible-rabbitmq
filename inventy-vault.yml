@@ -1,0 +1,219 @@
+all:
+  vars:
+    datacenter_name: dc2
+    nomad_url: https://nomad-dc2p-retail.citigo.net
+  children:
+    kv-monitoring:
+      children:
+        kv-monitoring-es:
+          children:
+            kv-monitoring-es-master:
+              hosts:
+                dc2p-kv-monitoring-es-master-01.citigo.io:
+                dc2p-kv-monitoring-es-master-02.citigo.io:
+                dc2p-kv-monitoring-es-master-03.citigo.io:
+            kv-monitoring-es-data:
+              hosts:
+                dc2p-kv-monitoring-es-data-01.citigo.io:
+                dc2p-kv-monitoring-es-data-02.citigo.io:
+                dc2p-kv-monitoring-es-data-03.citigo.io:
+                dc2p-kv-monitoring-es-data-04.citigo.io:
+                dc2p-kv-monitoring-es-data-05.citigo.io:
+                dc2p-kv-monitoring-es-data-06.citigo.io:
+                dc2p-kv-monitoring-es-data-07.citigo.io:
+                dc2p-kv-monitoring-es-data-08.citigo.io:
+            kv-monitoring-es-coordinate:
+              hosts:
+                dc2p-kv-monitoring-es-coordinate-01.citigo.io:
+                dc2p-kv-monitoring-es-coordinate-02.citigo.io:
+        kv-monitoring-kafka:
+          hosts:
+            dc2p-kv-monitoring-kafka-01.citigo.io:
+            dc2p-kv-monitoring-kafka-02.citigo.io:
+            dc2p-kv-monitoring-kafka-03.citigo.io:
+        kv-monitoring-nomad:
+          hosts:
+            node1:
+              ansible_host: 172.17.0.2
+          vars:
+            hosts_file:
+              - 192.168.49.32 rep.dr.audittrail.db1
+              - 192.168.49.33 rep.dr.audittrail.db2
+              - 192.168.49.39 tracking.replica.ct-dr-kv-trackingdb1
+              - 192.168.49.40 tracking.replica.ct-dr-kv-trackingdb2
+        kv-monitoring-lb:
+          hosts:
+            dc2p-kv-monitoring-lb-01.citigo.io:
+            dc2p-kv-monitoring-lb-02.citigo.io:
+        kv-monitoring-prometheus:
+          hosts:
+            dc2p-kv-monitoring-prometheus-01.citigo.io:
+          vars:
+            hosts_file:
+              - 10.15.10.10 retail-redis1
+              - 10.15.10.10 retail-redis2
+              - 10.15.10.10 retail-redis3
+        retail-ops-linux:
+          hosts:
+            dc2p-retail-ops-linux-01.citigo.io:
+    retail:
+      children:
+        retail-search:
+          children:
+            retail-search-leader:
+              hosts:
+                dc2p-retail-search-01.citigo.io:
+                dc2p-retail-search-02.citigo.io:
+                dc2p-retail-search-03.citigo.io:
+            retail-search-worker:
+              hosts:
+                dc2p-retail-search-04.citigo.io:
+                dc2p-retail-search-05.citigo.io:
+                dc2p-retail-search-06.citigo.io:
+                dc2p-retail-search-07.citigo.io:
+        retail-kafka:
+          hosts:
+            dc2p-retail-kafka-01.citigo.io:
+            dc2p-retail-kafka-02.citigo.io:
+            dc2p-retail-kafka-03.citigo.io:
+        retail-kafka-eventbus:
+          hosts:
+            dc2p-retail-kafka-04.citigo.io:
+            dc2p-retail-kafka-05.citigo.io:
+            dc2p-retail-kafka-06.citigo.io:
+        retail-kafka-tracking:
+          hosts:
+            dc2p-retail-kafka-tracking-01.citigo.io:
+            dc2p-retail-kafka-tracking-02.citigo.io:
+            dc2p-retail-kafka-tracking-03.citigo.io:
+        retail-redis:
+          hosts:
+            dc2p-retail-redis-01.citigo.io:
+            dc2p-retail-redis-02.citigo.io:
+            dc2p-retail-redis-03.citigo.io:
+        retail-redis-report:
+          hosts:
+            dc2p-retail-redis-04.citigo.io:
+        retail-redis-tracking:
+          hosts:
+            dc2p-retail-redis-tracking-01.citigo.io:
+            dc2p-retail-redis-tracking-02.citigo.io:
+            dc2p-retail-redis-tracking-03.citigo.io:        
+        retail-rabbitmq:
+          hosts:
+            dc2p-retail-rabbitmq-01.citigo.io:
+            dc2p-retail-rabbitmq-02.citigo.io:
+            dc2p-retail-rabbitmq-03.citigo.io:
+        retail-rabbitmq-tracking:
+          hosts:
+            dc2p-retail-rabbitmq-tracking-01.citigo.io:
+            dc2p-retail-rabbitmq-tracking-02.citigo.io:
+            dc2p-retail-rabbitmq-tracking-03.citigo.io:
+        retail-unbound:
+          hosts:
+            dc2p-retail-unbound-01.citigo.io:
+        retail-ftp-server:
+          hosts:
+            dc2p-retail-ftp-server-01.citigo.io:
+              keepalived_priority: 101
+            dc2p-retail-ftp-server-02.citigo.io:
+              keepalived_priority: 100
+        retail-lb-internal:
+          hosts:
+            dc2p-retail-lb-internal-01.citigo.io:
+              keepalived_priority: 101
+            dc2p-retail-lb-internal-02.citigo.io:
+              keepalived_priority: 100
+        retail-lb:
+          hosts:
+            dc2p-retail-lb-01.citigo.io:
+              keepalived_priority: 101
+            dc2p-retail-lb-02.citigo.io:
+              keepalived_priority: 100
+        retail-consul-server:
+          hosts:
+            dc2p-retail-consul-server-01.citigo.io:
+            dc2p-retail-consul-server-02.citigo.io:
+            dc2p-retail-consul-server-03.citigo.io:
+        retail-nomad-server:
+          hosts:
+            dc2p-retail-nomad-server-01.citigo.io:
+            dc2p-retail-nomad-server-02.citigo.io:
+            dc2p-retail-nomad-server-03.citigo.io:
+        retail-api-windows-importance:
+          hosts:
+            dc2p-retail-api-windows-importance-01.citigo.io:
+            dc2p-retail-api-windows-importance-02.citigo.io:
+            dc2p-retail-api-windows-importance-03.citigo.io:
+            dc2p-retail-api-windows-importance-04.citigo.io:
+            dc2p-retail-api-windows-importance-05.citigo.io:
+            dc2p-retail-api-windows-importance-06.citigo.io:
+            dc2p-retail-api-windows-importance-07.citigo.io:
+            dc2p-retail-api-windows-importance-08.citigo.io:
+            dc2p-retail-api-windows-importance-09.citigo.io:
+            dc2p-retail-api-windows-importance-10.citigo.io:
+        retail-api-windows-normal:
+          hosts:
+            dc2p-retail-api-windows-normal-01.citigo.io:
+            dc2p-retail-api-windows-normal-02.citigo.io:
+            dc2p-retail-api-windows-normal-03.citigo.io:
+            dc2p-retail-api-windows-normal-04.citigo.io:
+        retail-service-windows-importance:
+          hosts:
+            dc2p-retail-service-windows-importance-01.citigo.io:
+            dc2p-retail-service-windows-importance-02.citigo.io:
+            dc2p-retail-service-windows-importance-03.citigo.io:
+            dc2p-retail-service-windows-importance-04.citigo.io:
+            dc2p-retail-service-windows-importance-05.citigo.io:
+        retail-service-windows-normal:
+          hosts:
+            dc2p-retail-service-windows-normal-01.citigo.io:
+            dc2p-retail-service-windows-normal-02.citigo.io:
+            dc2p-retail-service-windows-normal-03.citigo.io:
+            dc2p-retail-service-windows-normal-04.citigo.io:
+            dc2p-retail-service-windows-normal-05.citigo.io:
+        retail-api-linux-importance:
+          hosts:
+            dc2p-retail-api-linux-importance-01.citigo.io:
+            dc2p-retail-api-linux-importance-02.citigo.io:
+        retail-api-linux-normal:
+          hosts:
+            dc2p-retail-api-linux-normal-01.citigo.io:
+            dc2p-retail-api-linux-normal-02.citigo.io:
+        retail-service-linux-importance:
+          hosts:
+            dc2p-retail-service-linux-importance-01.citigo.io:
+            dc2p-retail-service-linux-importance-02.citigo.io:
+        retail-service-linux-normal:
+          hosts:
+            dc2p-retail-service-linux-normal-01.citigo.io:
+            dc2p-retail-service-linux-normal-02.citigo.io:
+        retail-app-linux-kyc:
+          hosts:
+            dc2p-retail-app-linux-kyc-01.citigo.io:
+            dc2p-retail-app-linux-kyc-02.citigo.io:
+            dc2p-retail-app-linux-kyc-03.citigo.io:
+        retail-redis-kyc:
+          hosts:
+            dc2p-retail-redis-kyc-01.citigo.io:
+            dc2p-retail-redis-kyc-02.citigo.io:
+            dc2p-retail-redis-kyc-03.citigo.io:
+        ops-restore-data:
+          hosts:
+            dc2p-ops-restore-data-01.citigo.io:
+        ops-tool:
+          hosts:
+            dc2p-ops-tool-01.citigo.io:
+    ops:
+      children:
+
+local:
+  hosts:
+    localhost:
+      ansible_connection: local
+kv-monitoring-nomad-admin:
+  hosts:
+    dc2p-kv-monitoring-nomad-01.citigo.io:
+kv-monitoring-es-admin:
+  hosts:
+    dc2p-kv-monitoring-observer-01.citigo.io:

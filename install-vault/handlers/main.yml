@@ -1,2 +1,12 @@
----
-# handlers file for install-vault
+
+- name: Start vault
+  systemd:
+    name: vault
+    daemon_reload: yes
+    state: restarted
+
+- name: Enable vault
+  systemd:
+    name: vault
+    enabled: yes
+
