@@ -4,6 +4,15 @@ rabbitmq_version: 3.10.7-1
 rabbitmq_admin_user: admin
 rabbitmq_admin_password: admin
 
+rabbitmq_recovery_username: "{{ lookup('hashi_vault', 'secret=kv/data/rabbitmq_credentials:recovery_username') }}"
+rabbitmq_recovery_password: "{{ lookup('hashi_vault', 'secret=kv/data/rabbitmq_credentials:recovery_password') }}"
+
+rabbitmq_exporter_username: "{{ lookup('hashi_vault', 'secret=kv/data/rabbitmq_credentials:exporter_username') }}"
+rabbitmq_exporter_password: "{{ lookup('hashi_vault', 'secret=kv/data/rabbitmq_credentials:exporter_password') }}"
+
+rabbitmq_dong_pham_username: "{{ lookup('hashi_vault', 'secret=kv/data/rabbitmq_credentials:dong.pham_username') }}"
+rabbitmq_dong_pham_password: "{{ lookup('hashi_vault', 'secret=kv/data/rabbitmq_credentials:dong.pham_password') }}"
+
 rabbitmq_install_mode: cluster #standalone
 rabbitmq_config_dir: /etc/rabbitmq
 rabbitmq_erlang_cookie_path: /var/lib/rabbitmq

@@ -9,3 +9,42 @@
     write_priv: .*
     tags: administrator
     state: present
+
+- name: Add default rabbitmq_recovery_username user has full access control on all vhost in rabbitmq_list_vhost
+  community.rabbitmq.rabbitmq_user:
+    user: "{{ rabbitmq_recovery_username }}"
+    password: "{{ rabbitmq_recovery_password }}"
+    vhost: "{{item}}"
+    configure_priv: .*
+    read_priv: .*
+    write_priv: .*
+    state: present
+  with_items: "{{rabbitmq_list_vhost}}"
+  when: rabbitmq_recovery_username is defined and rabbitmq_recovery_password is defined and rabbitmq_list_vhost is defined
+
+- name: Add default rabbitmq_exporter_username user has full access control
+  community.rabbitmq.rabbitmq_user:
+    user: "{{ rabbitmq_exporter_username }}"
+    password: "{{ rabbitmq_exporter_password }}"
+    # vhost: "{{item}}"
+    # configure_priv: ""
+    # read_priv: .*
+    # write_priv: ""
+    tags: administrator
+    state: present
+  with_items: "{{rabbitmq_list_vhost}}"
+  when: rabbitmq_exporter_username is defined and rabbitmq_exporter_password is defined and rabbitmq_list_vhost is defined
+
+
+- name: Add default rabbitmq_dong_pham_username user has monitoring access control on all vhost in rabbitmq_list_vhost
+  community.rabbitmq.rabbitmq_user:
+    user: "{{ rabbitmq_dong_pham_username }}"
+    password: "{{ rabbitmq_dong_pham_password }}"
+    vhost: "{{item}}"
+    configure_priv: ""
+    write_priv: ""
+    read_priv: .*
+    tags: monitoring
+    state: present
+  with_items: "{{rabbitmq_list_vhost}}"
+  when: rabbitmq_exporter_username is defined and rabbitmq_exporter_password is defined and rabbitmq_list_vhost is defined

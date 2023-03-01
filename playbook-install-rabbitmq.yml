@@ -18,6 +18,13 @@
 
 - name: Install rabbitmq cluster for main app
   hosts: all
+  vars:
+    - rabbitmq_list_vhost:
+      - "retail-tracking-app"
+      - "retail-tracking-ending-stock"
+      - "retail-tracking-ending-stock-recovery"
+      - "retail-tracking-recovery"
+      - "retail-tracking-rerun"
   become: yes
   serial: 1
   roles:
