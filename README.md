@@ -18,7 +18,7 @@ ansible-playbook -i inventory.yml playbook.yml --user root
 
 ## Run rabbitMQ cluster
 ```sh
-ansible-playbook -i inventory.yml playbook-install-rabbitmq.yml --user ubuntu --extra-vars "ansible_sudo_pass=12345678"
+ansible-playbook -i inventory.yml playbook-install-rabbitmq.yml --user root
 ```
 
 

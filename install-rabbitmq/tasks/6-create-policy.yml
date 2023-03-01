@@ -1,0 +1,24 @@
+---
+- name: Ensure the default vhost "/" contains the HA policy
+  community.rabbitmq.rabbitmq_policy:
+    name: ha-all
+    vhost: /
+    pattern: .*
+    apply_to: all
+    tags:
+      ha-mode: exactly
+      ha-params: 2
+      ha-sync-mode: automatic
+
+- name: Ensure the other vhost contains the HA policy
+  community.rabbitmq.rabbitmq_policy:
+    name: ha-retail
+    vhost: "{{ item }}"
+    pattern: .*
+    apply_to: all
+    tags:
+      ha-mode: exactly
+      ha-params: 2
+      ha-sync-mode: automatic
+  with_items: "{{ rabbitmq_vhost }}"
+  when: rabbitmq_vhost is defined

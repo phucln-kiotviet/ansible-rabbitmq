@@ -7,10 +7,13 @@
 - name: Install dependancy packages
   ansible.builtin.apt:
     name:
+      # - gir1.2-soup-2.4
+      # - libsoup2.4-1
+      # - libsoup-gnome2.4-1
       - apt-transport-https
       - sshpass
-      - gpg
-      - systemctl
+      # - gpg
+      # - systemctl
     state: present
     update_cache: true
 
