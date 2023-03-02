@@ -32,8 +32,8 @@
     # write_priv: ""
     tags: administrator
     state: present
-  with_items: "{{rabbitmq_list_vhost}}"
-  when: rabbitmq_exporter_username is defined and rabbitmq_exporter_password is defined and rabbitmq_list_vhost is defined
+  # with_items: "{{rabbitmq_list_vhost}}"
+  when: rabbitmq_exporter_username is defined and rabbitmq_exporter_password is defined
 
 
 - name: Add default rabbitmq_dong_pham_username user has monitoring access control on all vhost in rabbitmq_list_vhost

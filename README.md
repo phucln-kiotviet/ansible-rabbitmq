@@ -46,6 +46,6 @@ docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' dev-
 - Set up vault: 
 
 ```sh
-   export VAULT_TOKEN='hvs.qmV0t5bbFzOKIVfevVVqpjej'
+   export VAULT_TOKEN='hvs.LIMy21YutkreP3CMuuP1Xj9c'
    export VAULT_ADDR='http://172.17.0.2:8200/'
 ``` 
